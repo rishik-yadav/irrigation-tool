@@ -5,6 +5,7 @@
 It is an user interface **Irrigation System Design Tool** that automates and simplifies the plannig of irrigation layout for the farmers and helps them optimize the entire process by suggesting optimal components and power system to the farmers depending on their inputs specific to their fields.
 
 ---
+##  Project Structure
 
 irrigation tool/
 
