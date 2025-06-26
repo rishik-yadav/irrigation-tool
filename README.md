@@ -6,7 +6,10 @@ It is an user interface **Irrigation System Design Tool** that automates and sim
 
 ---
 
-<pre> ## Project Structure ``` irrigation tool/ ├── app.py ├── requirements.txt ├── static/ │ ├── script.js │ └── style.css ├── templates/ │ ├── index.html │ ├── power.html │ ├── reference.html │ └── result.html └── utils/ ├── calculations.py ├── elevation.py ├── __init__.py └── __pycache__/ # (cache files) ``` </pre>
+irrigation tool/
+|
+|
+|
 
 
 
