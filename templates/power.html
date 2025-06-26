@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Voltage Drop Calculator</title></head>
+<body>
+<h2>⚡ Power Supply Calculator</h2>
+<form method="POST" action="/power_result">
+  <label>Pump Power (kW):</label>
+  <input type="number" name="power_kw" step="0.01" required><br>
+  <label>Voltage (Volts):</label>
+  <input type="number" name="voltage" step="1" required><br>
+  <label>Connection Type:</label>
+  <select name="phase">
+    <option value="single">Single Phase</option>
+    <option value="three">Three Phase</option>
+  </select><br>
+  <label>Distance (meters, one-way):</label>
+  <input type="number" name="distance" step="1" required><br>
+  <label>Conductor Material:</label>
+  <select name="material">
+    <option value="copper">Copper</option>
+    <option value="aluminum">Aluminum</option>
+  </select><br>
+  <button type="submit">Calculate</button>
+</form>
+<a href="/">⬅ Back to Home</a>
+</body>
+</html>

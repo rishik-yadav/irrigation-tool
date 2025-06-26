@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Irrigation Results</title>
+  <style>
+    .highlight {
+      background-color: #c9f0d6;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<h2>🚀 Optimal Pipe and Pump Result</h2>
+{% if result.error %}
+  <p style="color: red;">{{ result.error }}</p>
+{% endif %}
+
+{% if result.q %}
+  <ul>
+    <li>Flow Rate (Q): {{ result.q }} m³/s</li>
+    <li>Best Pipe Diameter: {{ result.diameter }} mm</li>
+    <li>Velocity: {{ result.velocity }} m/s</li>
+    <li>Reynolds Number: {{ result.reynolds }}</li>
+    <li>Friction Factor: {{ result.friction_factor }}</li>
+    <li>Elevation Min: {{ result.elevation_min }} m</li>
+    <li>Elevation Max: {{ result.elevation_max }} m</li>
+    <li>Elevation Difference (Static Head): {{ result.static_head }} m</li>
+    <li>Emitter Pressure Head: {{ result.emitter_head }} m</li>
+    <li>Friction Head: {{ result.friction_head }} m</li>
+    <li>Total Head: {{ result.total_head }} m</li>
+    <li>Pump Power Required: {{ result.pump_power_kw }} kW</li>
+    <li>Suggested Motor Size: {{ result.motor_hp }}</li>
+    <li>Recommended Pipe Class: {{ result.pipe_class }}</li>
+  </ul>
+{% endif %}
+
+{% if result.all_options and result.all_options|length > 0 %}
+  <h3>📈 All Valid Pipe Options</h3>
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Diameter (mm)</th>
+      <th>Velocity (m/s)</th>
+      <th>Friction Head (m)</th>
+      <th>Total Head (m)</th>
+      <th>Power (kW)</th>
+      <th>Motor (HP)</th>
+      <th>Class</th>
+    </tr>
+    {% for row in result.all_options %}
+    <tr {% if row.diameter == result.diameter %}class="highlight"{% endif %}>
+      <td>{{ row.diameter }}</td>
+      <td>{{ row.velocity }}</td>
+      <td>{{ row.friction_head }}</td>
+      <td>{{ row.total_head }}</td>
+      <td>{{ row.pump_power_kw }}</td>
+      <td>{{ row.motor_hp }}</td>
+      <td>{{ row.pipe_class }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% elif not result.q %}
+  <p style="color: orange;">No valid pipe options matched the design constraints (velocity/friction head).</p>
+{% endif %}
+</body>
+</html>

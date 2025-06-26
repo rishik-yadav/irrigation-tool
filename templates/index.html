@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Irrigation Tool</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h3 { color: #2c3e50; }
+    label { font-weight: bold; }
+    input, select, textarea, button { margin-bottom: 10px; display: block; width: 100%; max-width: 400px; padding: 5px; }
+    #map { height: 400px; margin-bottom: 10px; }
+    .section { margin-bottom: 30px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+  </style>
+</head>
+<body>
+<h3>🔧 Tools</h3>
+<ul>
+  <li><a href="/reference">📘 Component Reference</a></li>
+</ul>
+
+<form method="POST" action="/calculate">
+
+  <div class="section">
+    <h3>🌾 Farm Selection</h3>
+    <label>Field Area on Map:</label>
+    <div id="map"></div>
+    <input type="hidden" name="geojson" id="geojson" required>
+  </div>
+
+  <div class="section">
+    <h3>🛠️ Pipe & Pump Sizing</h3>
+    <label>Crop Type:</label>
+<select name="crop" required>
+  <option value="wheat">Wheat</option>
+  <option value="rice">Rice</option>
+  <option value="maize">Maize</option>
+  <option value="sugarcane">Sugarcane</option>
+  <option value="cotton">Cotton</option>
+</select>
+
+    <label>Soil Type:</label>
+<select name="soil" required>
+  <option value="sandy">Sandy</option>
+  <option value="clay">Clay</option>
+  <option value="loamy">Loamy</option>
+  <option value="silt">Silt</option>
+  <option value="peaty">Peaty</option>
+</select>
+
+    <label>Water Requirement (litres/day):</label>
+    <input type="number" name="water" step="0.01" required>
+
+    <label>Duration (hours):</label>
+    <input type="number" name="duration" step="0.1" required>
+
+    <label>Pipe Length (m):</label>
+    <input type="number" name="length" step="1" required>
+
+    <label>Pipe Material:</label>
+    <select name="material">
+      <option value="PVC">PVC</option>
+      <option value="HDPE">HDPE</option>
+      <option value="GI">GI</option>
+    </select>
+
+    <label>Irrigation Type:</label>
+    <select name="irrigation">
+      <option value="drip">Drip</option>
+      <option value="sprinkler">Sprinkler</option>
+    </select>
+  </div>
+
+  <p><a href="/power">⚡ Go to Power Setup Page</a></p>
+
+  <p><a href="/automation">🤖 Go to Automation Settings</a></p>
+
+  <button type="submit">Run Irrigation Design</button>
+</form>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+<script>
+  var map = L.map('map').setView([28.6, 77.2], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18
+  }).addTo(map);
+
+  var drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+
+  var drawControl = new L.Control.Draw({
+    edit: { featureGroup: drawnItems },
+    draw: {
+      polyline: false,
+      marker: false,
+      circle: false,
+      rectangle: false,
+      circlemarker: false,
+      polygon: {
+        allowIntersection: false,
+        showArea: true
+      }
+    }
+  });
+  map.addControl(drawControl);
+
+  map.on('draw:created', function (e) {
+    drawnItems.clearLayers();
+    var layer = e.layer;
+    drawnItems.addLayer(layer);
+    document.getElementById('geojson').value = JSON.stringify(layer.toGeoJSON());
+  });
+
+  function updateVoltage() {
+    const phase = document.getElementById('phase').value;
+    const voltageInput = document.getElementById('voltage');
+    voltageInput.value = (phase === 'three') ? 415 : 220;
+  }
+</script>
+</body>
+</html>

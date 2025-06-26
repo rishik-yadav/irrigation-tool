@@ -1,0 +1,4 @@
+SoilType,FieldCapacity,PermanentWiltingPoint,InfiltrationRate
+Sandy,15,5,20
+Loamy,25,12,10
+Clay,40,20,2
